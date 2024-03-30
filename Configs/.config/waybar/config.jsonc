@@ -4,9 +4,9 @@
 // sourced from header module //
 
     "layer": "top",
-    "position": "top",
+    "position": "bottom",
     "mod": "dock",
-    "height": 28,
+    "height": 31,
     "exclusive": true,
     "passthrough": false,
     "gtk-layer-shell": true,
@@ -14,47 +14,97 @@
 
 // positions generated based on config.ctl //
 
-	"modules-left": ["custom/padd","custom/l_end","cpu","memory","custom/cpuinfo","custom/r_end","custom/l_end","idle_inhibitor","clock","custom/r_end","custom/l_end","hyprland/workspaces","custom/r_end","custom/padd"],
-	"modules-center": ["custom/padd","custom/l_end","hyprland/window","custom/r_end","custom/padd"],
-	"modules-right": ["custom/padd","custom/l_end","backlight","network","bluetooth","pulseaudio","pulseaudio#microphone","custom/updates","custom/keybindhint","custom/r_end","custom/l_end","tray","battery","custom/r_end","custom/l_end","custom/wallchange","custom/theme","custom/wbar","custom/cliphist","custom/power","custom/r_end","custom/padd"],
+	"modules-left": ["custom/padd","custom/l_end","custom/power","custom/cliphist","custom/wbar","custom/theme","custom/wallchange","custom/r_end","custom/l_end","wlr/taskbar","custom/spotify","custom/r_end","","custom/padd"],
+	"modules-center": ["custom/padd","custom/l_end","idle_inhibitor","clock","custom/r_end","custom/padd"],
+	"modules-right": ["custom/padd","custom/l_end","tray","battery","custom/r_end","custom/l_end","backlight","network","bluetooth","pulseaudio","pulseaudio#microphone","custom/keybindhint","custom/r_end","custom/padd"],
 
 
 // sourced from modules based on config.ctl //
 
-    "cpu": {
-        "interval": 10,
-        "format": "󰍛 {usage}%",
+    "custom/power": {
+        "format": "{}",
         "rotate": 0,
-        "format-alt": "{icon0}{icon1}{icon2}{icon3}",
-        "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
+        "exec": "echo ; echo  logout",
+        "on-click": "~/.config/hyprdots/scripts/logoutlaunch.sh 2",
+        "on-click-right": "~/.config/hyprdots/scripts/logoutlaunch.sh 1",
+        "interval" : 86400, // once every day
+        "tooltip": true
     },
 
-    "memory": {
-        "states": {
-            "c": 90, // critical
-            "h": 60, // high
-            "m": 30, // medium
-        },
-        "interval": 30,
-        "format": "󰾆 {used}GB",
+    "custom/cliphist": {
+        "format": "{}",
         "rotate": 0,
-        "format-m": "󰾅 {used}GB",
-        "format-h": "󰓅 {used}GB",
-        "format-c": " {used}GB",
-        "format-alt": "󰾆 {percentage}%",
-        "max-length": 10,
-        "tooltip": true,
-        "tooltip-format": "󰾆 {percentage}%\n {used:0.1f}GB/{total:0.1f}GB"
+        "exec": "echo ; echo 󰅇 clipboard history",
+        "on-click": "sleep 0.1 && ~/.config/hyprdots/scripts/cliphist.sh c",
+        "on-click-right": "sleep 0.1 && ~/.config/hyprdots/scripts/cliphist.sh d",
+        "on-click-middle": "sleep 0.1 && ~/.config/hyprdots/scripts/cliphist.sh w",
+        "interval" : 86400, // once every day
+        "tooltip": true
     },
 
-    "custom/cpuinfo": {
-        "exec": " /home/xander/.config/hyprdots/scripts/cpuinfo.sh",
+    "custom/wbar": {
+        "format": "{}", //    //
+        "rotate": 0,
+        "exec": "echo ; echo  switch bar //  dock",
+        "on-click": "~/.config/hyprdots/scripts/wbarconfgen.sh n",
+        "on-click-right": "~/.config/hyprdots/scripts/wbarconfgen.sh p",
+        "on-click-middle": "sleep 0.1 && ~/.config/hyprdots/scripts/quickapps.sh kitty firefox spotify code dolphin",
+        "interval" : 86400,
+        "tooltip": true
+    },
+
+    "custom/theme": {
+        "format": "{}",
+        "rotate": 0,
+        "exec": "echo ; echo 󰟡 switch theme",
+        "on-click": "~/.config/hyprdots/scripts/themeswitch.sh -n",
+        "on-click-right": "~/.config/hyprdots/scripts/themeswitch.sh -p",
+        "on-click-middle": "sleep 0.1 && ~/.config/hyprdots/scripts/themeselect.sh",
+        "interval" : 86400, // once every day
+        "tooltip": true
+    },
+
+    "custom/wallchange": {
+        "format": "{}",
+        "rotate": 0,
+        "exec": "echo ; echo 󰆊 switch wallpaper",
+        "on-click": "~/.config/hyprdots/scripts/swwwallpaper.sh -n",
+        "on-click-right": "~/.config/hyprdots/scripts/swwwallpaper.sh -p",
+        "on-click-middle": "sleep 0.1 && ~/.config/hyprdots/scripts/swwwallselect.sh",
+        "interval" : 86400, // once every day
+        "tooltip": true
+    },
+
+	"wlr/taskbar": {
+		"format": "{icon}",
+		"rotate": 0,
+		"icon-size": 18,
+		"icon-theme": "Tela-circle-dracula",
+        "spacing": 0,
+		"tooltip-format": "{title}",
+		"on-click": "activate",
+		"on-click-middle": "close",
+		"ignore-list": [
+			"Alacritty"
+		],
+		"app_ids-mapping": {
+			"firefoxdeveloperedition": "firefox-developer-edition"
+		}
+	},
+
+    "custom/spotify": {
+        "exec": "/usr/bin/env python3 ~/.config/waybar/modules/mediaplayer.py --player spotify",
+        "format": " {}",
+        "rotate": 0,
         "return-type": "json",
-        "format": "{}",
-        "rotate": 0,
-        "interval": 5, // once every 5 seconds
-        "tooltip": true,
-        "max-length": 1000
+        "on-click": "playerctl play-pause --player spotify",
+        "on-click-right": "playerctl next --player spotify",
+        "on-click-middle": "playerctl previous --player spotify",
+        "on-scroll-up": "~/.config/hyprdots/scripts/volumecontrol.sh -p spotify i",
+        "on-scroll-down": "~/.config/hyprdots/scripts/volumecontrol.sh -p spotify d",
+        "max-length": 25,
+        "escape": true,
+        "tooltip": true
     },
 
     "idle_inhibitor": {
@@ -91,31 +141,24 @@
         }
     },
 
-    "hyprland/workspaces": {
-        "disable-scroll": true,
+    "tray": {
+        "icon-size": 18,
         "rotate": 0,
-        "all-outputs": true,
-        "active-only": false,
-        "on-click": "activate",
-        "persistent-workspaces": {
-        }
+        "spacing": 5
     },
 
-    "hyprland/window": {
-        "format": "  {}",
-        "rotate": 0,
-        "separate-outputs": true,
-        "rewrite": {
-            "xander@ArchLinux:(.*)": "$1 ",
-            "(.*) — Mozilla Firefox": "$1 󰈹",
-            "(.*)Mozilla Firefox": "Firefox 󰈹",
-            "(.*) - Visual Studio Code": "$1 󰨞",
-            "(.*)Visual Studio Code": "Code 󰨞",
-            "(.*) — Dolphin": "$1 󰉋",
-            "(.*)Spotify": "Spotify 󰓇",
-            "(.*)Steam": "Steam 󰓓"
+    "battery": {
+        "states": {
+            "good": 95,
+            "warning": 30,
+            "critical": 20
         },
-        "max-length": 1000
+        "format": "{icon} {capacity}%",
+        "rotate": 0,
+        "format-charging": " {capacity}%",
+        "format-plugged": " {capacity}%",
+        "format-alt": "{time} {icon}",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
     },
 
     "backlight": {
@@ -161,9 +204,9 @@
         "rotate": 0,
         "format-muted": "婢",
         "on-click": "pavucontrol -t 3",
-        "on-click-middle": "/home/xander/.config/hyprdots/scripts/volumecontrol.sh -o m",
-        "on-scroll-up": "/home/xander/.config/hyprdots/scripts/volumecontrol.sh -o i",
-        "on-scroll-down": "/home/xander/.config/hyprdots/scripts/volumecontrol.sh -o d",
+        "on-click-middle": "~/.config/hyprdots/scripts/volumecontrol.sh -o m",
+        "on-scroll-up": "~/.config/hyprdots/scripts/volumecontrol.sh -o i",
+        "on-scroll-down": "~/.config/hyprdots/scripts/volumecontrol.sh -o d",
         "tooltip-format": "{icon} {desc} // {volume}%",
         "scroll-step": 5,
         "format-icons": {
@@ -183,101 +226,17 @@
         "format-source": "",
         "format-source-muted": "",
         "on-click": "pavucontrol -t 4",
-        "on-click-middle": "/home/xander/.config/hyprdots/scripts/volumecontrol.sh -i m",
-        "on-scroll-up": "/home/xander/.config/hyprdots/scripts/volumecontrol.sh -i i",
-        "on-scroll-down": "/home/xander/.config/hyprdots/scripts/volumecontrol.sh -i d",
+        "on-click-middle": "~/.config/hyprdots/scripts/volumecontrol.sh -i m",
+        "on-scroll-up": "~/.config/hyprdots/scripts/volumecontrol.sh -i i",
+        "on-scroll-down": "~/.config/hyprdots/scripts/volumecontrol.sh -i d",
         "tooltip-format": "{format_source} {source_desc} // {source_volume}%",
         "scroll-step": 5
-    },
-
-    "custom/updates": {
-        "exec": "/home/xander/.config/hyprdots/scripts/systemupdate.sh",
-        "return-type": "json",
-        "format": "󰮯 {}",
-        "rotate": 0,
-        "on-click": "/home/xander/.config/hyprdots/scripts/systemupdate.sh up",
-        "interval": 86400, // once every day
-        "tooltip": true,
     },
 
     "custom/keybindhint": {
         "format": " ",
         "rotate": 0,
-        "on-click": "/home/xander/.config/hyprdots/scripts/keybinds_hint.sh"
-    },
-
-    "tray": {
-        "icon-size": 16,
-        "rotate": 0,
-        "spacing": 5
-    },
-
-    "battery": {
-        "states": {
-            "good": 95,
-            "warning": 30,
-            "critical": 20
-        },
-        "format": "{icon} {capacity}%",
-        "rotate": 0,
-        "format-charging": " {capacity}%",
-        "format-plugged": " {capacity}%",
-        "format-alt": "{time} {icon}",
-        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"]
-    },
-
-    "custom/wallchange": {
-        "format": "{}",
-        "rotate": 0,
-        "exec": "echo ; echo 󰆊 switch wallpaper",
-        "on-click": "/home/xander/.config/hyprdots/scripts/swwwallpaper.sh -n",
-        "on-click-right": "/home/xander/.config/hyprdots/scripts/swwwallpaper.sh -p",
-        "on-click-middle": "sleep 0.1 && /home/xander/.config/hyprdots/scripts/swwwallselect.sh",
-        "interval" : 86400, // once every day
-        "tooltip": true
-    },
-
-    "custom/theme": {
-        "format": "{}",
-        "rotate": 0,
-        "exec": "echo ; echo 󰟡 switch theme",
-        "on-click": "/home/xander/.config/hyprdots/scripts/themeswitch.sh -n",
-        "on-click-right": "/home/xander/.config/hyprdots/scripts/themeswitch.sh -p",
-        "on-click-middle": "sleep 0.1 && /home/xander/.config/hyprdots/scripts/themeselect.sh",
-        "interval" : 86400, // once every day
-        "tooltip": true
-    },
-
-    "custom/wbar": {
-        "format": "{}", //    //
-        "rotate": 0,
-        "exec": "echo ; echo  switch bar //  dock",
-        "on-click": "/home/xander/.config/hyprdots/scripts/wbarconfgen.sh n",
-        "on-click-right": "/home/xander/.config/hyprdots/scripts/wbarconfgen.sh p",
-        "on-click-middle": "sleep 0.1 && /home/xander/.config/hyprdots/scripts/quickapps.sh kitty firefox spotify code dolphin",
-        "interval" : 86400,
-        "tooltip": true
-    },
-
-    "custom/cliphist": {
-        "format": "{}",
-        "rotate": 0,
-        "exec": "echo ; echo 󰅇 clipboard history",
-        "on-click": "sleep 0.1 && /home/xander/.config/hyprdots/scripts/cliphist.sh c",
-        "on-click-right": "sleep 0.1 && /home/xander/.config/hyprdots/scripts/cliphist.sh d",
-        "on-click-middle": "sleep 0.1 && /home/xander/.config/hyprdots/scripts/cliphist.sh w",
-        "interval" : 86400, // once every day
-        "tooltip": true
-    },
-
-    "custom/power": {
-        "format": "{}",
-        "rotate": 0,
-        "exec": "echo ; echo  logout",
-        "on-click": "/home/xander/.config/hyprdots/scripts/logoutlaunch.sh 2",
-        "on-click-right": "/home/xander/.config/hyprdots/scripts/logoutlaunch.sh 1",
-        "interval" : 86400, // once every day
-        "tooltip": true
+        "on-click": "~/.config/hyprdots/scripts/keybinds_hint.sh"
     },
 
 
