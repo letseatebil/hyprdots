@@ -27,17 +27,7 @@ https://github.com/prasanthrangan/hyprdots/assets/106020512/c995699a-299c-4a8e-9
 
 ## Installation
 
-The installation script is made for Arch, but **may** work on some Arch based distros with **systemd**.
-For Debian, please refer **Senshi111**'s version [here](https://github.com/Senshi111/debian-hyprland-hyprdots).
-Checkout **Ksk**'s [video](https://www.youtube.com/watch?v=mb8h1-LB9K0) for full installation walkthrough.
-
-> [!IMPORTANT]
-> Install script will auto-detect nvidia card and install nvidia-dkms drivers for your kernel.
-> So please ensure that your Nvidia card supports [dkms](https://wiki.archlinux.org/title/NVIDIA) drivers and hyprland.
-
-> [!CAUTION]
-> The script modifies your grub config to enable Nvidia drm and theme.
-> This script is also designed to be done after a minimal arch installation, using it on previously installed desktop should work but will change whatever you currently have (gtk/qt theming, shell, sddm, grub, etc) and is at your own risk.
+The installation script is made for Arch right after base-installation. This script is for personal use with varying modifications to configurations and keybindings. Use at your own discretion.
 
 After a minimal Arch install (with grub and systemd), clone and execute -
 
@@ -50,20 +40,6 @@ cd ~/Hyprdots/Scripts
 
 Please reboot after the install script completes and takes you to sddm login screen (or black screen) for the first time.
 For more details, please refer [installation wiki](https://github.com/prasanthrangan/hyprdots/wiki/Installation)
-
-### Updating
-To update Hyprdots you will need to pull the latest changes from github and restore the configs by doing -
-
-```shell
-cd ~/Hyprdots/Scripts
-git pull
-./install.sh -r
-```
-
-> [!IMPORTANT]
-> This backs up and overwrites all configs as setup by `restore_cfg.lst` in ~/Hyprdots/Scripts.
-> So please note that any configurations you made may be overwritten if listed to be done so, but can be recovered in ~/.config/cfg_backups.
-
 
 <div align = right> <br><br>
 
